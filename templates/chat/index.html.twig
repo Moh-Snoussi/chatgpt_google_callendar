@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <script type="module">
+    import ChatWidget from 'https://unpkg.com/simplest-chat-widget'
+
+    ChatWidget.create({
+      validate: (message) => [],
+      answer: (messageParams) =>
+        new Promise((resolve) => {
+          fetch('chat/message', {
+            method: 'POST',
+            body: new URLSearchParams({
+              history: JSON.stringify(messageParams.history)
+            })
+          })
+            .then((response) => response.json())
+            .then(({ answer }) => resolve(answer))
+        })
+    })
+  </script>
+{% endblock %}
