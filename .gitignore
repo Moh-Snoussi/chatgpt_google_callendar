@@ -15,5 +15,8 @@
 ###< phpunit/phpunit ###
 
 
-client_secret.json
+/client_secret.json
 credentials*
+
+.vscode/
+.idea/
