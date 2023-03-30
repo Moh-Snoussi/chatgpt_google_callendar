@@ -1,22 +1,100 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <script type="module">
-    import ChatWidget from 'https://unpkg.com/simplest-chat-widget'
+    <style>
+		* {
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+			Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+			sans-serif;
 
-    ChatWidget.create({
-      validate: (message) => [],
-      answer: (messageParams) =>
-        new Promise((resolve) => {
-          fetch('chat/message', {
-            method: 'POST',
-            body: new URLSearchParams({
-              history: JSON.stringify(messageParams.history)
-            })
-          })
-            .then((response) => response.json())
-            .then(({ answer }) => resolve(answer))
-        })
-    })
-  </script>
+			color: aliceblue;
+		}
+
+		input,
+		textarea {
+			background-color: #343541;
+			border: none;
+			color: aliceblue;
+			padding: 0.5rem;
+			font-size: 1rem;
+			border-radius: 0.5rem;
+		}
+
+		button {
+			background-color: #343541;
+			border: none;
+			color: aliceblue;
+			font-size: 1rem;
+			border-radius: 0.5rem;
+			margin: 1rem;
+			padding: 1rem;
+		}
+
+		button:hover {
+			background-color: #4a4a5a;
+		}
+
+		button[disabled] {
+			background-color: #343541;
+			border: none;
+			color: aliceblue;
+			font-size: 1rem;
+			border-radius: 0.5rem;
+			margin: 1rem;
+			padding: 1rem;
+			opacity: 0.5;
+		}
+
+		body {
+			background-color: #202123;
+			padding: 1rem;
+		}
+    </style>
+
+    <div style="display: flex; text-align: right; justify-content: right; align-items: end; height: 100vh; flex-direction: column;">
+
+
+        <h1>ChatGpt Google Calendar meeting</h1>
+        <div class="github">
+            <a href="https://github.com/Moh-Snoussi/chatgpt_google_callendar">
+                <img src="https://img.shields.io/github/stars/Moh-Snoussi/chatgpt_google_callendar?style=social" alt="GitHub stars">
+            </a>
+        </div>
+        <p><strong>A Symfony project</strong> with a chatbot that uses the ChatGPT API and the Google API to provide a seamless experience
+            for
+            users.</p>
+        <p> The chatbot is designed to handle a variety of tasks, including answering questions, providing information, and scheduling
+            meetings.</p>
+        <p>This page only shows the visual part of the chatbot, the backend is not included, but it is included in this repository.</p>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/typeit-gpt/src/index.css"/>
+
+    <script type="module">
+		import ChatWidget from 'https://unpkg.com/simplest-chat-widget@1.2.1/dist/main.mjs';
+		import {TypeItGpt} from "https://cdn.skypack.dev/typeit-gpt";
+
+
+		ChatWidget.create( {
+			answer  : ( messageParams ) =>
+				new Promise( ( resolve ) => {
+					resolve( '' );
+					messageParams.answerEl.classList.add( 'unset-bg' );
+					fetch( 'chat/message', {
+						method: 'POST',
+						body  : new URLSearchParams( {
+							history: JSON.stringify( messageParams.history )
+						} )
+					} )
+						.then( ( response ) => response.json() )
+						.then( ( {answer} ) => {
+							messageParams.setLoading( false );
+							TypeItGpt.typeCursor( answer, {
+								messageContainer: messageParams.answerEl,
+								onType          : () => messageParams.answerEl.scrollIntoView( {behavior: 'smooth'} ),
+								onEnd: () => messageParams.answerEl.classList.remove( 'unset-bg' )
+							} );
+						} );
+				} )
+		} );
+    </script>
 {% endblock %}

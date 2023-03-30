@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<style>
+	* {
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+		sans-serif;
+
+		color: aliceblue;
+	}
+
+	input,
+	textarea {
+		background-color: #343541;
+		border: none;
+		color: aliceblue;
+		padding: 0.5rem;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	button {
+		background-color: #343541;
+		border: none;
+		color: aliceblue;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		margin: 1rem;
+		padding: 1rem;
+	}
+
+	button:hover {
+		background-color: #4a4a5a;
+	}
+
+	button[disabled] {
+		background-color: #343541;
+		border: none;
+		color: aliceblue;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		margin: 1rem;
+		padding: 1rem;
+		opacity: 0.5;
+	}
+
+	body {
+		background-color: #202123;
+		padding: 1rem;
+	}
+</style>
+
+<div style="display: flex; text-align: right; justify-content: right; align-items: end; height: 100vh; flex-direction: column;">
+
+
+	<h1>ChatGpt Google Calendar meeting</h1>
+	<div class="github">
+		<a href="https://github.com/Moh-Snoussi/chatgpt_google_callendar">
+			<img src="https://img.shields.io/github/stars/Moh-Snoussi/chatgpt_google_callendar?style=social" alt="GitHub stars">
+		</a>
+	</div>
+	<p><strong>A Symfony project</strong> with a chatbot that uses the ChatGPT API and the Google API to provide a seamless experience for
+		users.</p>
+	<p> The chatbot is designed to handle a variety of tasks, including answering questions, providing information, and scheduling
+		meetings.</p>
+	<p>This page only shows the visual part of the chatbot, the backend is not included, but it is included in this repository.</p>
+</div>
+<link rel="stylesheet" href="https://unpkg.com/typeit-gpt/src/index.css"/>
+
+<script type="module">
+	import ChatWidget from 'https://unpkg.com/simplest-chat-widget';
+	import {TypeItGpt} from "https://cdn.skypack.dev/typeit-gpt";
+
+	const answers = ['As we ponder the mysteries of the universe, our limited human perspective can make it difficult to fully comprehend the intricacies of concepts such as gravity and spacetime curvature. However, with the help of advanced mathematical models and scientific analogies, we can begin to grasp the fundamental nature of these phenomena. The rubber sheet analogy, while imperfect, provides a tangible representation of how massive objects can warp the fabric of spacetime in all directions, creating a curvature that affects the motion of other objects. Despite our limitations, we can use our imagination and the tools at our disposal to explore the wonders of the universe, unlocking new insights into the secrets of our world and beyond.',
+		'Welcome, How can I help you?',
+		'I don\'t understand your question, please try again',
+		'I am just hard coded answers',
+		'This is only a demo, I am not a real chatbot'
+	];
+
+	ChatWidget.create( {
+		validate: ( message ) => [],
+		answer  : ( messageParams ) =>
+			new Promise( ( resolve ) => {
+				resolve( null );
+				const answer = answers[Math.floor( Math.random() * answers.length )];
+				messageParams.setLoading( false );
+				//const background = messageParams.messageEl.style.backgroundColor;
+				messageParams.answerEl.classList.add( 'unset-bg' );
+				TypeItGpt.typeCursor( answer, {
+					messageContainer: messageParams.answerEl,
+					onType          : () => messageParams.answerEl.scrollIntoView( {behavior: 'smooth'} ),
+					onEnd           : () => {
+						messageParams.answerEl.classList.remove( 'unset-bg' );
+					}
+
+				} );
+			} )
+	} );
+</script>
+</body>
+</html>

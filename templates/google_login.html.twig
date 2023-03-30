@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        {% if allowCalendarOwner == 'true' %}
+            <p>Allow calendar owner login is active,</p> <p>deactivate login from .env ALLOW_CALENDAR_OWNER=0</p>
+            <a href="{{ path('connect_google') }}">Login with Google</a>
+            <p>Redirect Uri need to be added to Google API: <a href="https://console.cloud.google.com/apis/credentials">Google console -> Api -> Credentials</a></p>
+            <a href="{{ path('google_authorized_redirect_uri') }}">{{ app.request.uri ~ path('google_authorized_redirect_uri', [], true) }}</a>
+        {% else %}
+            <p>Deactivate calendar owner login, activate login from .env ALLOW_CALENDAR_OWNER=1</p>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
