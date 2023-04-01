@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 This repository contains a Symfony project with a chatbot that uses the ChatGPT API and the Google API to provide a seamless experience for users. The chatbot is designed to handle a variety of tasks, including answering questions, providing information, and scheduling meetings.
-Visually, we use a the [simplest_chat_widget](https://moh-snoussi.github.io/simple-chat-widget/) to provide an interactive interface for users to communicate with the chatbot. and the [typeit-gpt](https://moh-snoussi.github.io/typeit-gpt/) blinking cursor to simulate a ChatGPT conversation experience.
+[Visually demo (No OpenAI)](https://moh-snoussi.github.io/chatgpt_google_callendar/), we use a the [simplest_chat_widget](https://moh-snoussi.github.io/simple-chat-widget/) to provide an interactive interface for users to communicate with the chatbot. and the [typeit-gpt](https://moh-snoussi.github.io/typeit-gpt/) blinking cursor to simulate a ChatGPT conversation experience.
 
 [![Youtube video](https://img.youtube.com/vi/TlAyqe__qOE/0.jpg)](https://youtu.be/TlAyqe__qOE)
 
