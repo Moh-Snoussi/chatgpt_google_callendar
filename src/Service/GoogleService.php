@@ -5,6 +5,7 @@ use Exception;
 use Google\Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -18,7 +19,11 @@ class GoogleService
 	/**
 	 * @throws \Google\Exception
 	 */
-	public function __construct( private readonly Client $client, UrlGeneratorInterface $urlGenerator )
+	public function __construct(
+        private readonly Client $client,
+        private readonly LoggerInterface $calendarLogger,
+        UrlGeneratorInterface $urlGenerator,
+    )
 	{
 		$this->client->useApplicationDefaultCredentials( false );
 		$this->client->setAuthConfig( __DIR__ . '/../../' . 'client_secret.json' );
@@ -55,9 +60,12 @@ class GoogleService
 		$eventParams = $this->checkForMeeting( $message );
 		if ( $eventParams )
 		{
+            $this->calendarLogger->info( 'Creating event in the calendar', $eventParams );
 			try
 			{
-				$this->request( $eventParams );
+                $eventLink = $this->request( $eventParams );
+                $this->calendarLogger->info( 'Event created', [ 'link' => $eventLink ] );
+                return $eventLink;
 			}
 			catch ( Exception $e )
 			{
@@ -136,17 +144,17 @@ class GoogleService
 	 */
 	public function checkForMeeting( string $answer ): ?array
 	{
-		$pattern = '/Email: (?<email>.*)\nSubject: (?<subject>.*)\nLocation: (?<location>.*)\nDate: (?<date>.*)\nTime: (?<time>.*)\nDuration: (?<duration>.*)/m';
+		$pattern = '/Email: (?<email>.*)\n*Subject: (?<subject>.*)\n*Location: (?<location>.*)\n*Date: (?<date>.*)\n*Time: (?<time>.*)\n*Duration: (?<duration>.*)/m';
 
-		if ( preg_match( $pattern, $answer, $matches ) && isset( $matches[ 'email' ], $matches[ 'subject' ], $matches[ 'location' ], $matches[ 'date' ], $matches[ 'time' ], $matches[ 'duration' ] ) )
+		if ( preg_match( $pattern, $answer, $matches, PREG_OFFSET_CAPTURE ) )
 		{
-			$start = new \DateTime( $matches[ 'date' ] . ' ' . $matches[ 'time' ] );
+			$start = new \DateTime( $matches[ 'date' ][0] . ' ' . $matches[ 'time' ][0] );
 			$end   = clone $start;
-			$end->modify( '+' . $matches[ 'duration' ] );
+			$end->modify( '+' . $matches[ 'duration' ][0] );
 
 			return [
-				'summary'     => $matches[ 'subject' ],
-				'description' => $matches[ 'subject' ],
+				'summary'     => $matches[ 'subject' ][0],
+				'description' => $matches[ 'subject' ][0],
 				'start'       => [
 					'dateTime' => $start->format( 'Y-m-d\TH:i:sP' ),
 					'timeZone' => 'UTC'

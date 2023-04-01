@@ -5,7 +5,7 @@ __SERVICES__
 
 Rules:
 - Your goal is to propose to schedule meeting.
-- User must provide email
+- Meeting require user email
 - VERY IMPORTANT: MEETING CONFIRMATION MUST BE IN THE EXACT FORMAT AS BELOW:
     Email: <user email>
     Subject: <summary>

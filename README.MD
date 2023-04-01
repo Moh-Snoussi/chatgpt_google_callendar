@@ -19,9 +19,17 @@ We use regex to scan each OpenAI response to check if it contains a meeting conf
 ## 2. Installation
 
 ```bash 
-git clone https://github.com/xxxx
+git clone git@github.com:Moh-Snoussi/chatgpt_google_callendar.git
 cp .env .env.local
 composer install
+# Adjust the .env.local file with your own values
+# Download the Google Client Secret file and save it as client_secret.json in the root of the project
+# Run the server
+symfony server:start -d
+# Go to the chat page: https://localhost:8000/connect/google
+# add the google redirect url to the google console
+# Go back to the login page: https://localhost:8000/connect/google and login with google
+# Go to the chat page: https://localhost:8000/chat and start chatting with the bot.
 ```
 
 ## 3. Configuration

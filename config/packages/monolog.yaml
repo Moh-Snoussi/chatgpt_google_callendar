@@ -1,6 +1,9 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - chat
+        - calendar
+
 
 when@dev:
     monolog:
@@ -10,6 +13,18 @@ when@dev:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: ["!event"]
+
+            chat:
+                type: stream
+                path: "%kernel.logs_dir%/chat.log"
+                level: debug
+                channels: ["chat"]
+
+            calendar:
+                type: stream
+                path: "%kernel.logs_dir%/calendar.log"
+                level: debug
+                channels: ["calendar"]
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:

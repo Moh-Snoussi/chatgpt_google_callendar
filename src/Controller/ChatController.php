@@ -17,7 +17,7 @@ class ChatController extends AbstractController
 
 	public function __construct(
 		private readonly GoogleService   $calendarService,
-		private readonly LoggerInterface $logger
+		private readonly LoggerInterface $chatLogger,
 	)
 	{
 	}
@@ -91,7 +91,7 @@ class ChatController extends AbstractController
 			$answer .= PHP_EOL . $meeting;
 		}
 
-		$this->logger->info( 'Chat [user][agent]: ', [ $history[ count( $history ) - 1 ][ 'content' ] ], [ $answer ] );
+		$this->chatLogger->info( 'history', ['user' => $history[ count( $history ) - 1 ][ 'content' ], 'agent' => $answer ] );
 
 		return $this->json( [
 								'answer' => $answer
