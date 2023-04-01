@@ -4,6 +4,8 @@
 This repository contains a Symfony project with a chatbot that uses the ChatGPT API and the Google API to provide a seamless experience for users. The chatbot is designed to handle a variety of tasks, including answering questions, providing information, and scheduling meetings.
 Visually, we use a the [simplest_chat_widget](https://moh-snoussi.github.io/simple-chat-widget/) to provide an interactive interface for users to communicate with the chatbot. and the [typeit-gpt](https://moh-snoussi.github.io/typeit-gpt/) blinking cursor to simulate a ChatGPT conversation experience.
 
+[![Youtube video](https://img.youtube.com/vi/TlAyqe__qOE/0.jpg)](https://youtu.be/TlAyqe__qOE)
+
 
 ### how it works
 We use regex to scan each OpenAI response to check if it contains a meeting confirmation. If a meeting confirmation is found, the server calls the Google Calendar API to create a meeting.
